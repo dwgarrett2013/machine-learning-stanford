@@ -20,19 +20,18 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+%----------DEFINING THE COST FUNCTION----------
+
 %This is how you do for linear
 %predictions=X*theta; % this takes mx2 X times 2x1 theta 
 % note that theta is initialized to zeroes
 
 %caclulate h(x)
 % note that theta is initialized to zeroes so sigmoid(0)=0.5
-predictions=sigmoid(X*theta)
-
-
+predictions=sigmoid(X*theta);
 
 %This is how you do for linear
 %sqrErrors=(predictions-y).^2; %takes the element-squared difference
-
 
 errors=((-y.*log(predictions))-((1.-y).*log(1.-predictions)));
 
@@ -40,12 +39,14 @@ errors=((-y.*log(predictions))-((1.-y).*log(1.-predictions)));
 %J=1/(2*m)*sum(sqrErrors); % finds the sum of the squared errors and applies to cost function
 
 %Logistic working version
-J=(1/m)*sum(errors)
+J=(1/m)*sum(errors);
 
+%-----------FINDING THE GRADIENT---------------
 
 %Step 1: Find the predicted outputs using the current theta matrix and store results in same format as the y output matrix
 % must reverse the order of operations so X (an n x m matrix) * theta ( a m x 1 matrix) works and produces an n x 1 matrix
-predictions=sigmoid(X*theta)
+
+%predictions is already defined
     
 %Step 2: Find the difference between the predicted outputs and the actual outputs
 % since they have the same dimensionality (n x 1) they can be subtracted from each other
@@ -56,12 +57,7 @@ differences=predictions-y;
 % the dimensionality of the product of (m x n) * (n x 1) is an (m x 1 matrix)
 results=X'*differences;
 
-grad=(1/m).*results
-
-
-
-
-
+grad=(1/m).*results;
 
 % =============================================================
 
