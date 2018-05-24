@@ -21,13 +21,22 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+%Step 1: Add bias term of 1 to X to create a1
+a1=[ones(m,1),X];
 
+%Step 2: Calculate z2 and a2 values using a1 and Theta1 to make predictions
+z2=a1*Theta1';
+a2=sigmoid(z2);
 
+%Step 3: Add bias term of 1 to a2 to create a2
+a2=[ones(m,1),a2];
 
+%Step 4: Calculate z3 and a3 values using a2 and Theta2 to make predictions
+z3=a2*Theta2';
+a3=sigmoid(z3);
 
-
-
-
+%Step 5: set p to the max of each result set.  This is the classification that wins
+[a,p]=max(a3,[],2);
 
 % =========================================================================
 

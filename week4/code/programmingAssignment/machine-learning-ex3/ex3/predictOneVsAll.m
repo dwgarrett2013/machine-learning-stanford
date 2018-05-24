@@ -30,9 +30,24 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+%disp('size of p');
+%size(p)
 
+%disp('size of X');
+%size(X)
 
+%disp('size of num_labels');
+%num_labels
 
+%disp('size of all_theta');
+%size(all_theta)
+
+%Step 1: make predictions given theta and Xs
+predictions=X*all_theta';
+
+%Step 2: return the index of the max of each row in the predictions.  This is the most likely type of classifier
+%a is not used
+[a,p]=max(predictions,[],2);
 
 
 

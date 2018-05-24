@@ -2,12 +2,12 @@ function [J, grad] = costFunctionReg(theta, X, y, lambda)
 %COSTFUNCTIONREG Compute cost and gradient for logistic regression with regularization
 %   J = COSTFUNCTIONREG(theta, X, y, lambda) computes the cost of using
 %   theta as the parameter for regularized logistic regression and the
-%   gradient of the cost w.r.t. to the parameters. 
+%   gradient of the cost w.r.t. to the parameters.
 
 % Initialize some useful values
 m = length(y); % number of training examples
 
-% You need to return the following variables correctly 
+% You need to return the following variables correctly
 J = 0;
 grad = zeros(size(theta));
 
@@ -43,11 +43,11 @@ J=((1/m)*sum(errors)).+costPenalties;
 % must reverse the order of operations so X (an n x m matrix) * theta ( a m x 1 matrix) works and produces an n x 1 matrix
 
 %predictions is already defined
-    
+
 %Step 2: Find the difference between the predicted outputs and the actual outputs
 % since they have the same dimensionality (n x 1) they can be subtracted from each other
 differences=predictions-y;
-    
+
 %Step 3: For each coefficient (M), multiple that coefficient's values by the difference value it contributed to (see notes for a detailed example)
 % in order for this operation to work as intended, X needs to be transposed and then multiplied by the difference matrix
 % the dimensionality of the product of (m x n) * (n x 1) is an (m x 1 matrix)

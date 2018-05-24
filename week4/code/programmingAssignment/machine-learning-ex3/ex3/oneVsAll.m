@@ -13,6 +13,8 @@ n = size(X, 2);
 
 % You need to return the following variables correctly 
 all_theta = zeros(num_labels, n + 1);
+%disp('all_theta size');
+%size(all_theta)
 
 % Add ones to the X data matrix
 X = [ones(m, 1) X];
@@ -49,11 +51,27 @@ X = [ones(m, 1) X];
 %                 initial_theta, options);
 %
 
+%Step 1: Set Initial Theta
 
 
+%set the fminunc option set
+options = optimset('GradObj', 'on', 'MaxIter', 50);
 
 
+%Need to set initial theta 
 
+%Explanation:
+%1.  for each classification type, have a row in all_theta with a theta for each pixel representing the intenstity
+%2.  when looping: set an initial theta value to zero for that example, in this example that will be 401 cells (1st cell is a bias theta, last 400 are for each of the pixels)
+%3.  for each type of example.  for each pixel, determine the theta(intenstity) that likely says that pixel is part of a blank object
+%4.  fminunc returns a vector of the thetas,
+%y==c makes a y array to be test of the values that match a given classification type
+%5.  The lowest cost probability will be the most likely class
+
+for(c=1:num_labels),
+  initial_theta = zeros(n + 1, 1);
+  all_theta(c,:)=fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);  
+end;
 
 
 
