@@ -99,6 +99,15 @@ J = nnCostFunction(nn_params, input_layer_size, hidden_layer_size, ...
                    
 %Calculate the regularized portion of the cost function
 
+disp('this is nn_params');
+size(nn_params)
+disp('this is input_layer_size');
+input_layer_size
+disp('this is hidden_layer_size');
+hidden_layer_size
+disp('this is num_labels');
+
+
 % Reshape nn_params back into the parameters Theta1 and Theta2, the weight matrices
 % for our 2 layer neural network
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
@@ -110,28 +119,39 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 % Setup some useful variables
 m = size(X, 1);
 
+%Create unbiased thetas by setting first column of theta1 and theta2 to 0
 unbiasedTheta1=Theta1;
 unbiasedTheta1(:,1)=0;
 unbiasedTheta2=Theta2;
 unbiasedTheta2(:,1)=0;     
 
+%Create a variable that holds the regularization values
 secondHalf=0;
 
-for i=1:size(unbiasedTheta1,1),
-  for k=size(unbiasedTheta1,2),
-    secondHalf=secondHalf+unbiasedTheta1(i,k)^2;
-  end;
-end;  
+%Square each element in both unbiasedtheta matrices according to regularization function
+unbiasedTheta1=unbiasedTheta1.^2;
+unbiasedTheta2=unbiasedTheta2.^2;
 
-for i=1:size(unbiasedTheta2,1),
-  for k=size(unbiasedTheta2,2),
-    secondHalf=secondHalf+unbiasedTheta2(i,k)^2;
+
+% add unbiased thetas into the cost function
+for i=1:size(unbiasedTheta1,1),
+  for k=1:size(unbiasedTheta1,2),
+    secondHalf=secondHalf+unbiasedTheta1(i,k);
   end;
 end;
 
-secondHalf=secondHalf*(lambda/(2*m));
-J=J+secondHalf;
 
+for i=1:size(unbiasedTheta2,1),
+  for k=1:size(unbiasedTheta2,2),
+    secondHalf=secondHalf+unbiasedTheta2(i,k);
+  end;
+end;
+
+% multiply result of added regularization terms by lambda/2m
+secondHalf=secondHalf*(lambda/(2*m));
+
+%add regularization portion of cost function into the cost function
+J=J+secondHalf;
                    
 fprintf(['Cost at parameters (loaded from ex4weights): %f '...
          '\n(this value should be about 0.383770)\n'], J);
