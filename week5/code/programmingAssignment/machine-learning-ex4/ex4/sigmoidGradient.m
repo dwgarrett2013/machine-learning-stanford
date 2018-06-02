@@ -12,18 +12,10 @@ g = zeros(size(z));
 % Instructions: Compute the gradient of the sigmoid function evaluated at
 %               each value of z (z can be a matrix, vector or scalar).
 
+%Step 1: Calculate hte gradient for a set of Z values.  These Z values will correspond to derivative of a given set of z values
+%on the 2nd half note that to do 1-g(z) for each, g(z) is converted to a negative value, and is then 1 is added to each
 
-
-
-
-
-
-
-
-
-
-
-
+g=sigmoid(z).*(sigmoid(z).*(-1).+1);
 
 % =============================================================
 

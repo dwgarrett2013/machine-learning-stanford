@@ -39,28 +39,7 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 
-%This is non-regularized
-
-%disp('This is size of X');
-%size(X)
-
-
-%Adding a column of ones to X to account for the bias theta term
-
-%X=[ones(m,1),X];
-%disp('This is new size of X');
-%size(X)
-%X
-
-%disp('This is size of theta1');
-%size(Theta1)
-
-%Predictions are already made using the different layers present in the precition function
-
-%disp('input layer size');
-%input_layer_size
-%disp('hidden layer size');
-%hidden_layer_size
+%This part is non-regularized
 
 %Step 1: Predict the results into a matrix for each layer and store in h2
 h1 = sigmoid([ones(m, 1) X] * Theta1');
@@ -84,6 +63,41 @@ end;
 %Step 4: Calculate the finalized cost by dividing by m
 J=J*(1/m);
 
+% -------------Begin the regularization portion of the cost function
+
+%Step 5: Create unbiased thetas by setting first column of theta1 and theta2 to 0
+unbiasedTheta1=Theta1;
+unbiasedTheta1(:,1)=0;
+unbiasedTheta2=Theta2;
+unbiasedTheta2(:,1)=0;     
+
+%Step 6: Create a variable that holds the regularization values
+secondHalf=0;
+
+%Step 7: Square each element in both unbiasedtheta matrices according to regularization function
+unbiasedTheta1=unbiasedTheta1.^2;
+unbiasedTheta2=unbiasedTheta2.^2;
+
+%Step 8: Add unbiased thetas into the cost function
+for i=1:size(unbiasedTheta1,1),
+  for k=1:size(unbiasedTheta1,2),
+    secondHalf=secondHalf+unbiasedTheta1(i,k);
+  end;
+end;
+
+
+for i=1:size(unbiasedTheta2,1),
+  for k=1:size(unbiasedTheta2,2),
+    secondHalf=secondHalf+unbiasedTheta2(i,k);
+  end;
+end;
+
+%Step 9:  multiply result of added regularization terms by lambda/2m
+secondHalf=secondHalf*(lambda/(2*m));
+
+%Step 10: add regularization portion of cost function into the cost function
+J=J+secondHalf;
+
 %
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
@@ -99,6 +113,50 @@ J=J*(1/m);
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
+
+%disp('This is the size of updatedY');
+%size(updatedY)
+%updatedY
+
+%Note: We will be using updatedY which contains the binary vector of the y examples
+
+%Solving this problem with a vectorized implementation
+
+a1 = X;
+z2=([ones(m, 1) a1] * Theta1');
+a2=sigmoid(z2);
+z3 = ([ones(m, 1) a2] * Theta2');
+a3=sigmoid(z3);
+
+delta3=a3-updatedY;
+size(delta
+%disp('size of delta3');
+%a3
+%delta3
+%updatedY
+%disp('size delta2');
+%delta2=((Theta2')*delta3).*sigmoidGradient(z2);
+%size(delta2)
+
+
+
+
+%disp('This is example 1 of a3');
+%a3
+%disp('This is example 1 of y');
+%updatedY
+
+
+%for t=1:m,
+%  disp('This is a1');
+%  disp(t);
+%  a1=X(t,:);
+%  z2=Theta1'
+%  h1 = sigmoid([ones(m, 1) X] * Theta1');
+  %h2 = sigmoid([ones(m, 1) h1] * Theta2');
+  %disp(1);
+%end;
+
 %
 % Part 3: Implement regularization with the cost function and gradients.
 %
