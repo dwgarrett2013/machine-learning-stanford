@@ -147,8 +147,7 @@ d3=a3-updatedY;
 % operation is (m x r) * (r x h) = (m x h)
 %z2 is of size (m x h)
 d2=(d3*Theta2(:,2:end)).*sigmoidGradient(z2);
-
-
+\
 %Calculate Delta1
 %d2 (m x h) a1 (m x n)
 %operation is d2' (h x m) * a1 (m x n) = Delta1 (h x n)
@@ -159,13 +158,9 @@ Delta1=d2'*a1;
 %operation is d3' (r x m) * a2 (m x h) = Delta2 (r x h)
 Delta2=d3'*a2;
 
-%disp('This is the siize of Delta2');
-%size(Delta2)
-
-
+%Calculate gradient by dividing all elements of grads by m
 Theta1_grad=Delta1.*(1/m);
 Theta2_grad=Delta2.*(1/m);
-
 
 %
 % Part 3: Implement regularization with the cost function and gradients.
@@ -176,11 +171,27 @@ Theta2_grad=Delta2.*(1/m);
 %               and Theta2_grad from Part 2.
 %
 
+%Since we are no longer using Theta1 or Theta2, Remove the bias from Theta1 and Theta2 to calculate the regularization portion of the gradient
+Theta1(:,1)=0;
+Theta2(:,1)=0;
 
+%Create the regularized cost portion which is scaled by lambda/m
+regularizedTheta1=Theta1.*(lambda/m);
+regularizedTheta2=Theta2.*(lambda/m);
 
+%Add regularization terms 'regularizedTheta1' and 'regularizedTheta2' to the gradients
+Theta1_grad=Theta1_grad+regularizedTheta1;
+Theta2_grad=Theta2_grad+regularizedTheta2;
 
-
-
+%Print variables if needed
+%d2
+%d3
+%Delta1
+%Delta2
+%z2
+%sigmoidGradient(z2)
+%a2
+%a3
 
 
 
