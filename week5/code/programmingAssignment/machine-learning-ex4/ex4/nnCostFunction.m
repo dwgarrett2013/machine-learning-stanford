@@ -120,42 +120,52 @@ J=J+secondHalf;
 
 %Note: We will be using updatedY which contains the binary vector of the y examples
 
+
 %Solving this problem with a vectorized implementation
 
-a1 = X;
-z2=([ones(m, 1) a1] * Theta1');
-a2=sigmoid(z2);
-z3 = ([ones(m, 1) a2] * Theta2');
+% Step 1: Calculating with forward propogation
+% Note the bias terms are added into the activation arrays
+%Note:instead of using a1 to calculate z
+a1 = [ones(m,1) X];
+z2 = (a1*Theta1');
+a2 = [ones(m,1) sigmoid(z2)];
+z3 = (a2*Theta2');
 a3=sigmoid(z3);
 
-delta3=a3-updatedY;
-size(delta
-%disp('size of delta3');
-%a3
-%delta3
-%updatedY
-%disp('size delta2');
-%delta2=((Theta2')*delta3).*sigmoidGradient(z2);
-%size(delta2)
+%Dimensionality notes
+%m=number of training examples
+%n=number of training features including initial bias unit
+%h=number of  units in the hidden layer not including the bias unit
+%r=number of output classifications
+
+%Calculating diffefrences between the results and the y results both are (m x r)
+%Result is mxr
+d3=a3-updatedY;
+
+%Calculating d2.
+%Note: using Theta2(:,2:end) to remove the uneccesary bias term
+% operation is (m x r) * (r x h) = (m x h)
+%z2 is of size (m x h)
+d2=(d3*Theta2(:,2:end)).*sigmoidGradient(z2);
 
 
+%Calculate Delta1
+%d2 (m x h) a1 (m x n)
+%operation is d2' (h x m) * a1 (m x n) = Delta1 (h x n)
+Delta1=d2'*a1;
+
+%Calculate Delta2
+%d3 (m x r) a2 (m x h)
+%operation is d3' (r x m) * a2 (m x h) = Delta2 (r x h)
+Delta2=d3'*a2;
+
+%disp('This is the siize of Delta2');
+%size(Delta2)
 
 
-%disp('This is example 1 of a3');
-%a3
-%disp('This is example 1 of y');
-%updatedY
+Theta1_grad=Delta1.*(1/m);
+Theta2_grad=Delta2.*(1/m);
 
-
-%for t=1:m,
-%  disp('This is a1');
-%  disp(t);
-%  a1=X(t,:);
-%  z2=Theta1'
-%  h1 = sigmoid([ones(m, 1) X] * Theta1');
-  %h2 = sigmoid([ones(m, 1) h1] * Theta2');
-  %disp(1);
-%end;
 
 %
 % Part 3: Implement regularization with the cost function and gradients.
