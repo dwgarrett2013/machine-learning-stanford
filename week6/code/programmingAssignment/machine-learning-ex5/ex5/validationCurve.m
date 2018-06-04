@@ -43,6 +43,8 @@ for i = 1:length(lambda_vec),
   [error_val(i),bleh]=linearRegCostFunction(Xval,yval,trainingTheta,0);
 end;
 
+
+
 % =========================================================================
 
 end
