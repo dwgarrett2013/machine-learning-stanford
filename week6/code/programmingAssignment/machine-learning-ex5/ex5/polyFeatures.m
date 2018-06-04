@@ -15,10 +15,12 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
-
-
-
-
+%Loop through vector and create a matrix with power ratings
+for i=1:length(X),
+  for j=1:p,
+    X_poly(i,j)=X(i)^j;
+  end;
+end;
 
 % =========================================================================
 

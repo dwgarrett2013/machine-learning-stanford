@@ -53,27 +53,19 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-disp('Size X');
-size(X);
-X;
-disp('size xval');
-size(Xval);
-Xval;
-
-%Step 1: Train theta, with a lambda of 0.  This will be used across the board
-trainingTheta=trainLinearReg(X,y,0);
-
 %Loop through the examples of X and Y to calculate the training error as the number of samples grows
 for i=1:m,
-  %Step 2: Calculate the cost of error train of size i
+  
+  %Step 1: Train theta, with a lambda of the provided value. We will train theta for every array of results
+  trainingTheta=trainLinearReg(X(1:i,:),y(1:i),lambda);
+  
+  %Step 2: Calculate the cost of error training of size i.  Note that we will not be using regularzation, so theta is 0
   [error_train(i),bleh]=linearRegCostFunction(X(1:i,:),y(1:i),trainingTheta,0);
   
-end;
-
-%Loop through the examples of X and Y to calculate the training error as the number of samples grows
-for i=1:m,
-  %Step 2: Calculate the cost of error train of size i
-  [error_val(i),bleh]=linearRegCostFunction(Xval(1:i,:),yval(1:i),trainingTheta,0);
+  %Step 3: Calculate the cost of error cross validation error.  Note that we will not be using regularzation, so theta is 0
+  %Note that we are running each calculated trainingTheta over the entire cross-validation set
+  [error_val(i),bleh]=linearRegCostFunction(Xval,yval,trainingTheta,0);
+  
 end;
 
 
