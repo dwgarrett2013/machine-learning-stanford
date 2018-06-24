@@ -16,9 +16,19 @@ sim = 0;
 %
 %
 
+%x2 represents landmarks
+%x1 represents a sete of x values taht we are looking to test
+%sigma represents the variance of
 
+%for each get the euclidian distance between them 
+%sigma is just a value provided for now
 
+%Step 1: since we are using column vectors, we subtract them and take the elementwise squared
+%Step 2: Divide the sum by 2*sigma^2
+%Step 3: then we multiply result by -1
+%Step 4: take the exp of it
 
+sim=exp((-1)*(sum((x1-x2).^2)/(2*(sigma^2))));
 
 
 % =============================================================

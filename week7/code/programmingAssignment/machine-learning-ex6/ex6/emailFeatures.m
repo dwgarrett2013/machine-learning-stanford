@@ -48,12 +48,10 @@ x = zeros(n, 1);
 %
 %
 
-
-
-
-
-
-
+%Loop over all word_indices and the indexes of words in n with the value in word_indices to 1
+for w=1:length(word_indices),
+  x(word_indices(w))=1;
+end;
 
 % =========================================================================
     
