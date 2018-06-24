@@ -21,6 +21,13 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
+%calculate the mean and store the mean of each dimention (n total dimensions) in mu
+mu=mean(X);
+
+%find the mean of the squared differences of X and the means of each dimension
+%results have been checked on command line and the logic works
+sigma2=mean((X.-mu).^2);
+
 
 
 

@@ -42,18 +42,67 @@ Theta_grad = zeros(size(Theta));
 
 
 
+%R is a matrix of obersvations (movies x users)
+%Y is a matrix of movie ratings (movies x users)
+%X is a matrix of movie features (movies x features)
+%Theta is a matrix of feature wieghts (users x features)
 
+%-------------------------------------------------------------
+% This is performing the unregularized cost function
+%step 1: find squared ifference between predictions and Y ((Theta*X)-y).^2
+%step 2: elementwise multiply those differences by R to set instances where R!=1 to 0
+%Step 3: Then find the sum of all elments int eh resulting array to get the cost
+%Step 4: divid the result by 2 (due to the 1/2 in front of the summation
+J=sum(sum(((((X*Theta')-Y).^2).*R)))*(1/2);
 
+%-------------------------------------------------------------
+% This will add the regularized portion of the cost function
 
+%Calculate the first regularization term
+%Step 1: calculate the sum of every Theta squared
+%Step 2: multiply result by lambda/2
+regP1=(lambda/2)*(sum(sum(Theta.^2)));
 
+%Calculate the second regularization term
+%Step 1: calculate the sum of every X squared
+%Step 2: multiply result by lambda/2
+regP2=(lambda/2)*(sum(sum(X.^2)));
 
+J=J+regP1+regP2;
 
+%------------------------------------------------------------------------
+%Find the gradients with regularization added (input lambda will specify result)
 
+%Step 1: find the differences between the predictions and Y
+%Step 2: elementwise multiply those differences by R to set instances where R!=1 to 0
+%Step 3: multiply by Theta to store the sum of each X value in result X_grad
+%NOTE: X grad only takes up the first half of grad, if Theta_grad is not added, then half of grad values will be 0
+X_grad=(((X*Theta')-Y).*R)*Theta;
 
+%adding in regularization term
+%Step 1: scale X by labmda
+%Note that XReg will be added to every X_grad so they are of the same size
+XReg=X.*lambda;
 
+%Add regularization term to X_grad
+%This needs to be elementwise since this is a vector
+X_grad=X_grad.+XReg;
 
+%Step 1: find the differences between the predictions and Y
+%Step 2: elementwise multiply those differences by R to set instances where R!=1 to 0
+%Step 3: transpose The result so that when multiplied by X, the result is the sum of each entry for Theta
+%Step 4: multiply by X to store the sum of each Theta value in result Theta_grad
+%NOTE: Theta_grad only takes up the secoond half of grad, if X_grad is not added, then half of grad values will be 0
+Theta_grad=((((X*Theta')-Y).*R)')*X;
 
+%adding in regularization term
+%Step 1: scale Theta by labmda
+%Note that Theta reg will be added to every Theta_grad so they are of the same size
+ThetaReg=Theta.*lambda;
 
+%Add regularization term to Theta_grad
+%This needs to be elementwise since this is a vector
+Theta_grad=Theta_grad.+ThetaReg;
 
 % =============================================================
 

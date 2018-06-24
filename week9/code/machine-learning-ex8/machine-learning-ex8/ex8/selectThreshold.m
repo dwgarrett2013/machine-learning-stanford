@@ -23,17 +23,64 @@ for epsilon = min(pval):stepsize:max(pval)
     % Note: You can use predictions = (pval < epsilon) to get a binary vector
     %       of 0's and 1's of the outlier predictions
 
-
-
-
-
-
-
-
-
-
-
-
+    
+    %set true positives count
+    tp=0;
+    
+    %set false positives count
+    fp=0;
+    
+    %set true negatives count
+    tn=0;
+    
+    %set false negatives count
+    fn=0;
+    
+    %finds the binary listing of outliers
+    cvPredictions=(pval<epsilon);
+    
+    %Find outputs using the vectorized implementation note
+    tp=sum((cvPredictions == 1) & (yval == 1));
+    fp=sum((cvPredictions == 1) & (yval == 0));
+    tn=sum((cvPredictions == 0) & (yval == 0));
+    fn=sum((cvPredictions == 0) & (yval == 1));
+    
+    %disp('pred 1');
+    %predictions(1)
+    %disp('yval 1');
+    %yval(1)
+    %disp('pred==yval 1');
+    %predictions(1)==yval(1)
+    
+    %calculate the results of the estimations
+    %for i=1:length(predictions),
+    %  if predictions(i)==1,
+    %    if predictions(i)==yval(i),
+    %      tp=tp+1;
+    %    else
+    %      fp=fp+1;
+    %    end;
+    %  else
+    %    if predictions(i)==yval(i),
+    %      tn=tn+1;
+    %    else
+    %      fn=fn+1;
+    %  end;
+    %end;
+    
+    
+    %tp
+    %fp
+    %tn
+    %fn
+    
+    %calculate precision
+    prec=tp/(tp+fp);
+    %calculate recall
+    rec=tp/(tp+fn);
+    
+    %calculate F1 score using precision and recall
+    F1=(2*prec*rec)/(prec+rec);
 
     % =============================================================
 
